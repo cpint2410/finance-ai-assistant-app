@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { Budget, Category } from '../types.ts';
@@ -41,7 +42,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
     if (!token) return;
     try {
       setLoading(true);
-      const response = await fetch(`/api/budgets?month=${month}`, {
+      const response = await apiFetch(`/api/budgets?month=${month}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -58,7 +59,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
   const fetchCategories = async () => {
     if (!token) return;
     try {
-      const response = await fetch('/api/categories', {
+      const response = await apiFetch('/api/categories', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -100,7 +101,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
 
     try {
       setSubmitting(true);
-      const response = await fetch('/api/budgets', {
+      const response = await apiFetch('/api/budgets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +135,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
   const handleDeleteBudget = async () => {
     if (!token || !deleteId) return;
     try {
-      const response = await fetch(`/api/budgets/${deleteId}`, {
+      const response = await apiFetch(`/api/budgets/${deleteId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -341,7 +342,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
 
                 {/* Limit amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Budget Limit (£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Budget Limit (Â£)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -425,3 +426,4 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
     </div>
   );
 };
+

@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { CategorySummary, MonthlyHistory } from '../types.ts';
@@ -48,14 +49,14 @@ export const Reports: React.FC = () => {
       setLoading(true);
       
       // Fetch category totals for specified month & type
-      const catRes = await fetch(`/api/stats/category-summary?month=${month}&type=${reportType}`, {
+      const catRes = await apiFetch(`/api/stats/category-summary?month=${month}&type=${reportType}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const catJson = await catRes.json();
       if (catJson.success) setCategoryData(catJson.data);
 
       // Fetch historical monthly income vs expenses (last 12 months)
-      const histRes = await fetch('/api/stats/monthly-history', {
+      const histRes = await apiFetch('/api/stats/monthly-history', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const histJson = await histRes.json();
@@ -279,7 +280,7 @@ export const Reports: React.FC = () => {
                         fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
-                        tickFormatter={(v) => `£${v}`}
+                        tickFormatter={(v) => `Â£${v}`}
                       />
                       <Tooltip 
                         contentStyle={{ backgroundColor: '#111111', borderColor: '#262626', borderRadius: '12px' }}
@@ -315,7 +316,7 @@ export const Reports: React.FC = () => {
           </div>
 
           <div className="pt-4 border-t border-[#262626] mt-6 text-center text-xs text-gray-500 font-medium">
-            💡 Remaining savings are automatically added to your cumulative available balance.
+            ðŸ’¡ Remaining savings are automatically added to your cumulative available balance.
           </div>
         </div>
 
@@ -359,7 +360,7 @@ export const Reports: React.FC = () => {
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false}
-                  tickFormatter={(v) => `£${v}`}
+                  tickFormatter={(v) => `Â£${v}`}
                 />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#111111', borderColor: '#262626', borderRadius: '12px' }}
@@ -379,3 +380,4 @@ export const Reports: React.FC = () => {
     </div>
   );
 };
+

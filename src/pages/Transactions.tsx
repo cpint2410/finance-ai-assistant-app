@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { Transaction, Category } from '../types.ts';
@@ -84,7 +85,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
       if (endDate) queryParams.append('endDate', endDate);
       if (sortBy) queryParams.append('sortBy', sortBy);
 
-      const response = await fetch(`/api/transactions?${queryParams.toString()}`, {
+      const response = await apiFetch(`/api/transactions?${queryParams.toString()}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -101,7 +102,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
   const fetchCategories = async () => {
     if (!token) return;
     try {
-      const response = await fetch('/api/categories', {
+      const response = await apiFetch('/api/categories', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -189,7 +190,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
       const url = editingTx ? `/api/transactions/${editingTx.id}` : '/api/transactions';
       const method = editingTx ? 'PUT' : 'POST';
 
-      const response = await fetch(url, {
+      const response = await apiFetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +228,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
   const handleDeleteTx = async () => {
     if (!token || !showDeleteConfirm) return;
     try {
-      const response = await fetch(`/api/transactions/${showDeleteConfirm.id}`, {
+      const response = await apiFetch(`/api/transactions/${showDeleteConfirm.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -255,7 +256,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
 
     try {
       setCatSubmitting(true);
-      const response = await fetch('/api/categories', {
+      const response = await apiFetch('/api/categories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -603,7 +604,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
 
                 {/* Amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (Â£)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -828,3 +829,4 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
     </div>
   );
 };
+

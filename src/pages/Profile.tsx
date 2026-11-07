@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { Category } from '../types.ts';
@@ -35,7 +36,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNotify }) => {
   const fetchCategories = async () => {
     if (!token) return;
     try {
-      const response = await fetch('/api/categories', {
+      const response = await apiFetch('/api/categories', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -62,7 +63,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNotify }) => {
 
     try {
       setSaving(true);
-      const response = await fetch('/api/users/profile', {
+      const response = await apiFetch('/api/users/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -185,7 +186,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNotify }) => {
 
           {/* Security details card */}
           <div className="bg-[#111111]/30 p-5 rounded-2xl border border-[#262626] space-y-3">
-            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">🔒 Database Credentials</h4>
+            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">ðŸ”’ Database Credentials</h4>
             <p className="text-[11px] text-gray-500 leading-relaxed">
               Your profile is secured on our Google Cloud Run environment utilizing connection pooling and Firebase ID signature encryption tokens. No raw credentials or secret files are ever downloaded or stored in the browser.
             </p>
@@ -245,3 +246,4 @@ export const Profile: React.FC<ProfileProps> = ({ onNotify }) => {
     </div>
   );
 };
+

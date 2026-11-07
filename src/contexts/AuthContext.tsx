@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { 
   User as FirebaseUser, 
@@ -60,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const syncUserWithBackend = async (firebaseUser: FirebaseUser, idToken: string) => {
     try {
-      const response = await fetch('/api/users/sync', {
+      const response = await apiFetch('/api/users/sync', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshProfile = async () => {
     if (!token) return;
     try {
-      const response = await fetch('/api/users/profile', {
+      const response = await apiFetch('/api/users/profile', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -137,3 +138,4 @@ export const useAuth = () => {
   }
   return context;
 };
+

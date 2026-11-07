@@ -1,3 +1,4 @@
+﻿import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { Transaction, Category, SummaryStats } from '../types.ts';
@@ -46,21 +47,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
       setLoading(true);
       
       // Fetch summary stats
-      const statsRes = await fetch('/api/stats/summary', {
+      const statsRes = await apiFetch('/api/stats/summary', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const statsJson = await statsRes.json();
       if (statsJson.success) setStats(statsJson.summary);
 
       // Fetch recent transactions (first 5)
-      const txRes = await fetch('/api/transactions?limit=5', {
+      const txRes = await apiFetch('/api/transactions?limit=5', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const txJson = await txRes.json();
       if (txJson.success) setTransactions(txJson.transactions.slice(0, 5));
 
       // Fetch categories
-      const catRes = await fetch('/api/categories', {
+      const catRes = await apiFetch('/api/categories', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const catJson = await catRes.json();
@@ -78,7 +79,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
       }
 
       // Fetch category spending data
-      const summaryRes = await fetch('/api/stats/category-summary', {
+      const summaryRes = await apiFetch('/api/stats/category-summary', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const summaryJson = await summaryRes.json();
@@ -127,7 +128,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
 
     try {
       setSubmitting(true);
-      const response = await fetch('/api/transactions', {
+      const response = await apiFetch('/api/transactions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -413,7 +414,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
               <span className="text-xs text-gray-400 font-medium">Monthly Outflow Rate:</span>
             </div>
             <span className="text-xs font-bold text-indigo-400">
-              {stats ? formatCurrency(stats.monthlyExpense) : '£0.00'}
+              {stats ? formatCurrency(stats.monthlyExpense) : 'Â£0.00'}
             </span>
           </div>
         </div>
@@ -562,7 +563,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
 
                 {/* Amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (Â£)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -644,3 +645,4 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
     </div>
   );
 };
+
