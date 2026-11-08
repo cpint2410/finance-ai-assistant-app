@@ -2,7 +2,7 @@
 
 A modern, full-stack personal finance management application designed to help users manage their income, track expenses, monitor budgets and gain insights into their financial habits.
 
-🌐 Live Application: [https://full-stack-expense-tracker-3trd.onrender.com/](<https://full-stack-expense-tracker-3trd.onrender.com/?utm_source=chatgpt.com>)
+🌐 Live Application: [https://full-stack-expense-tracker-3trd.onrender.com/](https://full-stack-expense-tracker-3trd.onrender.com/)
 
 ## ✨ Features
 
@@ -57,7 +57,7 @@ A modern, full-stack personal finance management application designed to help us
 
 The application is deployed using Render and connects to a PostgreSQL database hosted on Neon.
 
-Live Demo: [https://full-stack-expense-tracker-3trd.onrender.com/](<https://full-stack-expense-tracker-3trd.onrender.com/?utm_source=chatgpt.com>)
+Live Demo: [https://full-stack-expense-tracker-3trd.onrender.com/](https://full-stack-expense-tracker-3trd.onrender.com/)
 
 ## 💻 Run Locally
 
