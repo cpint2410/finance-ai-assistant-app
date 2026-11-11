@@ -9,6 +9,7 @@ export interface Category {
 export interface Transaction {
   id: number;
   amount: number;
+  currency: string;
   description: string;
   date: string;
   type: 'income' | 'expense';

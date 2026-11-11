@@ -1,4 +1,4 @@
-﻿import { apiFetch } from '../lib/api';
+import { apiFetch } from '../lib/api';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { StatementUploadResult, ForecastPrediction, PortfolioHolding, StatementTransaction } from '../types.ts';
@@ -296,7 +296,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to import transactions.');
 
-      onNotify(`ðŸŽ‰ ${data.importedCount} transactions imported directly into your dashboard!`, 'success');
+      onNotify(`🎉 ${data.importedCount} transactions imported directly into your dashboard!`, 'success');
       // Deselect imported
       setSelectedTxIds(new Set());
     } catch (err: any) {
@@ -346,7 +346,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
             Statements & Predictive AI Hub
           </h2>
           <p className="text-sm text-gray-400 max-w-2xl mt-1">
-            Upload bank statements, student finance awards, or investment portfolios from the past 6â€“12 months. Our AI maps where your money is and forecasts next month's salary, expected bills, safe daily spend, and recommended savings.
+            Upload bank statements, student finance awards, or investment portfolios from the past 6-12 months. Our AI maps where your money is and forecasts next month's salary, expected bills, safe daily spend, and recommended savings.
           </p>
         </div>
 
@@ -528,7 +528,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
                     ? 'University students receive lumpy lump-sum maintenance payments 3 times a year. Our engine tracks your term pacing so you never run out of money before your next Student Finance drop.'
                     : persona === 'investor'
                     ? 'Retail investors hold assets across cash ISAs, ETFs, and crypto. Our engine monitors your portfolio yield, net gains, and guides regular dollar-cost averaging.'
-                    : 'Analyze past 6â€“12 months of paychecks, calculate fixed commitments against living expenses, and find your true safe daily spending limit.'}
+                    : 'Analyze past 6-12 months of paychecks, calculate fixed commitments against living expenses, and find your true safe daily spending limit.'}
                 </p>
               </div>
             )}
@@ -538,7 +538,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
               <div className="bg-[#161616] p-3 rounded-xl border border-[#262626]">
                 <span className="text-[10px] font-bold text-gray-500 uppercase">Statement Period</span>
                 <p className="text-xs font-semibold text-white mt-1 truncate">
-                  {statementData?.period || 'Past 6â€“12 Months'}
+                  {statementData?.period || 'Past 6-12 Months'}
                 </p>
               </div>
               <div className="bg-[#161616] p-3 rounded-xl border border-[#262626]">
@@ -733,7 +733,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
                   <ul className="grid grid-cols-1 md:grid-cols-3 gap-2">
                     {prediction.studentFinancePlan.studentTips.map((tip, idx) => (
                       <li key={idx} className="text-xs text-gray-300 bg-[#161616] p-2.5 rounded-lg border border-[#262626] flex items-start gap-2">
-                        <span className="text-indigo-400 font-bold">â€¢</span>
+                        <span className="text-indigo-400 font-bold">•</span>
                         <span>{tip}</span>
                       </li>
                     ))}
@@ -886,7 +886,7 @@ export const Forecast: React.FC<ForecastProps> = ({ onNotify }) => {
           {prediction.aiActionItems && prediction.aiActionItems.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                ðŸŽ¯ Top Priority Action Items for Next Month
+                🎯 Top Priority Action Items for Next Month
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {prediction.aiActionItems.map((item, idx) => (

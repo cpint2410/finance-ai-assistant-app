@@ -8,6 +8,13 @@
       "when": 1794086683444,
       "tag": "0000_true_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794398931804,
+      "tag": "0001_add_transaction_currency",
+      "breakpoints": true
     }
   ]
 }

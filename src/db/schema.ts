@@ -29,6 +29,7 @@ export const transactions = pgTable('transactions', {
     .references(() => categories.id, { onDelete: 'cascade' })
     .notNull(),
   amount: doublePrecision('amount').notNull(),
+  currency: text('currency').notNull().default('GBP'),
   description: text('description').notNull(),
   date: text('date').notNull(), // Format: YYYY-MM-DD
   type: text('type').$type<'income' | 'expense'>().notNull(), // 'income' or 'expense'

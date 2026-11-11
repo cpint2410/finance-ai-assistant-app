@@ -1,4 +1,4 @@
-﻿import { apiFetch } from '../lib/api';
+import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { Transaction, Category, SummaryStats } from '../types.ts';
@@ -34,6 +34,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
   // Quick Add Form State
   const [showAddForm, setShowAddForm] = useState(false);
   const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('GBP');
+
+  const currencyOptions = [
+    { code: 'GBP', name: 'British Pound', symbol: '\u00A3' },
+    { code: 'USD', name: 'US Dollar', symbol: '$' },
+    { code: 'EUR', name: 'Euro', symbol: '\u20AC' },
+    { code: 'INR', name: 'Indian Rupee', symbol: '\u20B9' },
+    { code: 'CAD', name: 'Canadian Dollar', symbol: '$' },
+    { code: 'AUD', name: 'Australian Dollar', symbol: '$' },
+    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF' },
+    { code: 'JPY', name: 'Japanese Yen', symbol: '\u00A5' },
+    { code: 'NZD', name: 'New Zealand Dollar', symbol: '$' },
+    { code: 'SGD', name: 'Singapore Dollar', symbol: '$' },
+  ];
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [type, setType] = useState<'income' | 'expense'>('expense');
@@ -136,6 +150,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
         },
         body: JSON.stringify({
           amount: parseFloat(amount),
+          currency,
           description: description.trim(),
           date,
           categoryId: parseInt(categoryId, 10),
@@ -150,6 +165,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
 
       if (json.success) {
         setAmount('');
+        setCurrency('GBP');
         setDescription('');
         setDate(new Date().toISOString().slice(0, 10));
         setShowAddForm(false);
@@ -163,8 +179,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
     }
   };
 
-  const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val);
+  const formatCurrency = (val: number, currencyCode = 'GBP') => {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: currencyCode,
+    }).format(val);
   };
 
   if (loading && !stats) {
@@ -399,7 +418,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
 
                     <div className="text-right shrink-0">
                       <span className={`text-sm font-bold ${tx.type === 'income' ? 'text-emerald-400' : 'text-white'}`}>
-                        {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                        {tx.type === 'income' ? '+' : '-'}
+                        {formatCurrency(tx.amount, tx.currency || 'GBP')}
                       </span>
                     </div>
                   </div>
@@ -414,7 +434,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
               <span className="text-xs text-gray-400 font-medium">Monthly Outflow Rate:</span>
             </div>
             <span className="text-xs font-bold text-indigo-400">
-              {stats ? formatCurrency(stats.monthlyExpense) : 'Â£0.00'}
+              {stats ? formatCurrency(stats.monthlyExpense) : '£0.00'}
             </span>
           </div>
         </div>
@@ -563,7 +583,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
 
                 {/* Amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (Â£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Amount ({currencyOptions.find(c => c.code === currency)?.symbol || '\u00A3'})
+                  </label>
                   <input
                     type="number"
                     step="0.01"
@@ -573,6 +595,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTransactionSuccess, s
                     placeholder="0.00"
                     className="w-full px-4 py-2.5 rounded-xl border border-[#262626] bg-transparent text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-mono"
                   />
+                </div>
+
+                {/* Currency Selection */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Currency
+                  </label>
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#262626] bg-[#111111] text-white text-sm"
+                  >
+                    {currencyOptions.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} - {c.name} ({c.symbol})
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Description */}

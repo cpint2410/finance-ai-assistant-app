@@ -175,6 +175,7 @@ async function startServer() {
       const txList = await db.select({
         id: transactions.id,
         amount: transactions.amount,
+        currency: transactions.currency,
         description: transactions.description,
         date: transactions.date,
         type: transactions.type,
@@ -199,7 +200,7 @@ async function startServer() {
   app.post('/api/transactions', requireAuth, async (req: AuthRequest, res) => {
     try {
       const dbUser = await getDbUser(req.user!.uid);
-      const { amount, description, date, categoryId, type } = req.body;
+      const { amount, currency = 'GBP', description, date, categoryId, type } = req.body;
 
       if (amount === undefined || amount === null || !description || !date || !categoryId || !type) {
         return res.status(400).json({ error: 'All fields (amount, description, date, categoryId, type) are required.' });
@@ -220,6 +221,7 @@ async function startServer() {
           userId: dbUser.id,
           categoryId,
           amount: parseFloat(amount),
+          currency,
           description: description.trim(),
           date,
           type,
@@ -245,7 +247,7 @@ async function startServer() {
     try {
       const dbUser = await getDbUser(req.user!.uid);
       const txId = parseInt(req.params.id, 10);
-      const { amount, description, date, categoryId, type } = req.body;
+      const { amount, currency = 'GBP', description, date, categoryId, type } = req.body;
 
       // Verify ownership
       const txCheck = await db.select().from(transactions).where(and(eq(transactions.id, txId), eq(transactions.userId, dbUser.id)));
@@ -271,6 +273,7 @@ async function startServer() {
           categoryId,
           amount: parseFloat(amount),
           description: description.trim(),
+          currency,
           date,
           type,
         })

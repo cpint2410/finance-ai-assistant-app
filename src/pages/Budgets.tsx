@@ -342,7 +342,7 @@ export const Budgets: React.FC<BudgetsProps> = ({ onNotify }) => {
 
                 {/* Limit amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Budget Limit (Â£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Budget Limit (£)</label>
                   <input
                     type="number"
                     step="0.01"

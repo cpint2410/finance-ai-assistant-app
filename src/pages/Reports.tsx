@@ -1,4 +1,4 @@
-﻿import { apiFetch } from '../lib/api';
+import { apiFetch } from '../lib/api';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { CategorySummary, MonthlyHistory } from '../types.ts';
@@ -280,7 +280,7 @@ export const Reports: React.FC = () => {
                         fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
-                        tickFormatter={(v) => `Â£${v}`}
+                        tickFormatter={(v) => `£${v}`}
                       />
                       <Tooltip 
                         contentStyle={{ backgroundColor: '#111111', borderColor: '#262626', borderRadius: '12px' }}
@@ -316,7 +316,7 @@ export const Reports: React.FC = () => {
           </div>
 
           <div className="pt-4 border-t border-[#262626] mt-6 text-center text-xs text-gray-500 font-medium">
-            ðŸ’¡ Remaining savings are automatically added to your cumulative available balance.
+            💡 Remaining savings are automatically added to your cumulative available balance.
           </div>
         </div>
 
@@ -360,7 +360,7 @@ export const Reports: React.FC = () => {
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false}
-                  tickFormatter={(v) => `Â£${v}`}
+                  tickFormatter={(v) => `£${v}`}
                 />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#111111', borderColor: '#262626', borderRadius: '12px' }}

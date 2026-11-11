@@ -46,6 +46,20 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
 
   // Form Field State
   const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('GBP');
+
+  const currencyOptions = [
+    { code: 'GBP', name: 'British Pound', symbol: '\u00A3' },
+    { code: 'USD', name: 'US Dollar', symbol: '\u0024' },
+    { code: 'EUR', name: 'Euro', symbol: '\u20AC' },
+    { code: 'INR', name: 'Indian Rupee', symbol: '\u20B9' },
+    { code: 'CAD', name: 'Canadian Dollar', symbol: '\u0024' },
+    { code: 'AUD', name: 'Australian Dollar', symbol: '\u0024' },
+    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF' },
+    { code: 'JPY', name: 'Japanese Yen', symbol: '\u00A5' },
+    { code: 'NZD', name: 'New Zealand Dollar', symbol: '\u0024' },
+    { code: 'SGD', name: 'Singapore Dollar', symbol: '\u0024' },
+  ];
   const [description, setDescription] = useState('');
   const [formCategoryId, setFormCategoryId] = useState('');
   const [formType, setFormType] = useState<'income' | 'expense'>('expense');
@@ -126,6 +140,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
   const handleOpenAddModal = () => {
     setEditingTx(null);
     setAmount('');
+    setCurrency('GBP');
     setDescription('');
     setFormType('expense');
     setDate(new Date().toISOString().slice(0, 10));
@@ -158,6 +173,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
   const handleOpenEditModal = (tx: Transaction) => {
     setEditingTx(tx);
     setAmount(tx.amount.toString());
+    setCurrency(tx.currency || 'GBP');
     setDescription(tx.description);
     setFormType(tx.type);
     setFormCategoryId(tx.categoryId.toString());
@@ -198,6 +214,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
         },
         body: JSON.stringify({
           amount: amountNum,
+          currency,
           description: description.trim(),
           date,
           categoryId: parseInt(formCategoryId, 10),
@@ -287,8 +304,15 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
     }
   };
 
-  const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val);
+  const formatCurrency = (val: number, currencyCode = 'GBP') => {
+    try {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: currencyCode,
+      }).format(val);
+    } catch {
+      return `${currencyCode} ${val.toFixed(2)}`;
+    }
   };
 
   return (
@@ -513,7 +537,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
 
                     {/* Amount */}
                     <td className={`py-4 px-6 text-right font-bold ${tx.type === 'income' ? 'text-emerald-400' : 'text-white'}`}>
-                      {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                      {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount, tx.currency)}
                     </td>
 
                     {/* Edit/Delete actions */}
@@ -604,7 +628,9 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
 
                 {/* Amount */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (Â£)</label>
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Amount ({currencyOptions.find(c => c.code === currency)?.symbol || '\u00A3'})
+                  </label>
                   <input
                     type="number"
                     step="0.01"
@@ -614,6 +640,24 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
                     placeholder="0.00"
                     className="w-full px-4 py-2.5 rounded-xl border border-[#262626] bg-transparent text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-mono"
                   />
+                </div>
+
+                {/* Currency Selection */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Currency
+                  </label>
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#262626] bg-[#111111] text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
+                  >
+                    {currencyOptions.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} - {c.name} ({c.symbol})
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Description */}
@@ -803,7 +847,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ onNotify }) => {
               <div className="space-y-2 text-center">
                 <h3 className="font-display font-bold text-white text-lg">Delete Transaction?</h3>
                 <p className="text-xs text-gray-400">
-                  Are you absolutely sure you want to delete <span className="font-semibold text-gray-200">"{showDeleteConfirm.description}"</span> of <span className="font-mono font-bold text-rose-400">{formatCurrency(showDeleteConfirm.amount)}</span>? This action is permanent.
+                  Are you absolutely sure you want to delete <span className="font-semibold text-gray-200">"{showDeleteConfirm.description}"</span> of <span className="font-mono font-bold text-rose-400">{formatCurrency(showDeleteConfirm.amount, showDeleteConfirm.currency)}</span>? This action is permanent.
                 </p>
               </div>
 
